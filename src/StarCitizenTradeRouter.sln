@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarCitizenTradeRouter", "StarCitizenTradeRouter\StarCitizenTradeRouter.csproj", "{3C06D720-4036-4AD4-99B8-8F0FB7F15C79}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarCitizenTraderRouter.WebApp.AcceptanceTests", "StarCitizenTraderRouter.WebApp.AcceptanceTests\StarCitizenTraderRouter.WebApp.AcceptanceTests.csproj", "{8885DAF8-BD99-4811-AC36-8A2BD90EDB1A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarCitizenTradeRouter.TraderTools.WebApp.Tests", "StarCitizenTradeRouter.TraderTools.WebApp.Tests\StarCitizenTradeRouter.TraderTools.WebApp.Tests.csproj", "{081F32F4-AC57-48FE-B966-43DAF1DA5974}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarCitizenTradeRouter.Data", "StarCitizenTradeRouter.Data\StarCitizenTradeRouter.Data.csproj", "{75C6C967-522D-4258-A103-EF3F38EBFCFE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StarCitizenTradeRouter.Data.Tests", "StarCitizenTradeRouter.Data.Tests\StarCitizenTradeRouter.Data.Tests.csproj", "{03455A8F-616B-4DD4-8610-84788E6A1BFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarCitizenTradeRouter.Presentation", "StarCitizenTradeRouter.Presentation\StarCitizenTradeRouter.Presentation.csproj", "{162A3CD6-889A-4700-8875-7E4E391D371A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3C06D720-4036-4AD4-99B8-8F0FB7F15C79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C06D720-4036-4AD4-99B8-8F0FB7F15C79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C06D720-4036-4AD4-99B8-8F0FB7F15C79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C06D720-4036-4AD4-99B8-8F0FB7F15C79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8885DAF8-BD99-4811-AC36-8A2BD90EDB1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8885DAF8-BD99-4811-AC36-8A2BD90EDB1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8885DAF8-BD99-4811-AC36-8A2BD90EDB1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8885DAF8-BD99-4811-AC36-8A2BD90EDB1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{081F32F4-AC57-48FE-B966-43DAF1DA5974}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{081F32F4-AC57-48FE-B966-43DAF1DA5974}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{081F32F4-AC57-48FE-B966-43DAF1DA5974}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{081F32F4-AC57-48FE-B966-43DAF1DA5974}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75C6C967-522D-4258-A103-EF3F38EBFCFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75C6C967-522D-4258-A103-EF3F38EBFCFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75C6C967-522D-4258-A103-EF3F38EBFCFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75C6C967-522D-4258-A103-EF3F38EBFCFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03455A8F-616B-4DD4-8610-84788E6A1BFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03455A8F-616B-4DD4-8610-84788E6A1BFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03455A8F-616B-4DD4-8610-84788E6A1BFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03455A8F-616B-4DD4-8610-84788E6A1BFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{162A3CD6-889A-4700-8875-7E4E391D371A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{162A3CD6-889A-4700-8875-7E4E391D371A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{162A3CD6-889A-4700-8875-7E4E391D371A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{162A3CD6-889A-4700-8875-7E4E391D371A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F44ABD27-1E81-4260-A894-415D1352835F}
+	EndGlobalSection
+EndGlobal
