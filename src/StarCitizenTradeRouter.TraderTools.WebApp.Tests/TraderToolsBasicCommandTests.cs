@@ -1,17 +1,19 @@
-using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
-using StarCitizenTradeRouter.Data;
-using StarCitizenTradeRouter.Dtos;
-using StarCitizenTradeRouter.Services;
-using StarCitizenTradeRouter.Trading.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Xbehave;
-
 namespace StarCitizenTradeRouter.TraderTools.WebApp.Tests
 {
+    using FluentAssertions;
+    using Microsoft.EntityFrameworkCore;
+    using StarCitizenTradeRouter.Data.EntityFramework;
+    using StarCitizenTradeRouter.Data.Trading;
+    using StarCitizenTradeRouter.Dtos;
+    using StarCitizenTradeRouter.Presentation;
+    using StarCitizenTradeRouter.Services;
+    using StarCitizenTradeRouter.Trading.Dtos;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Xbehave;
+
     public class TraderToolsBasicCommandTests
     {
         [Scenario]
@@ -19,19 +21,20 @@ namespace StarCitizenTradeRouter.TraderTools.WebApp.Tests
         {
             Trader trader = null;
             int id = 0;
+            var dbName = "SubmitTrader";
 
-            "Given I have a new Trader".x(() => trader = TestTradeDataStatic.MargamanTrader);
+            "Given I have a new trader".x(() => trader = TestTradeDataStatic.MargamanTrader);
 
-            "When I Submit the Trader".x(async () =>
+            "When I submit the trader".x(async () =>
             {
-                var traderRepository = CreateRepository<int, Trader>("SubmitTrader");
+                var traderRepository = new TraderRepository(CreateNewContext(dbName));
                 await traderRepository.New(trader);
                 id = trader.Id;
             });
 
-            "Then the Trader is displayed".x(async () =>
+            "Then the trader is displayed".x(async () =>
             {
-                var traderRepository = CreateRepository<int, Trader>("SubmitTrader");
+                var traderRepository = new TraderRepository(CreateNewContext(dbName));
                 AssertTrader(await traderRepository.Get(id), trader);
             });
         }
@@ -41,19 +44,20 @@ namespace StarCitizenTradeRouter.TraderTools.WebApp.Tests
         {
             AstralSystem system = null;
             int id = 0;
+            string dbName = "SubmitSystem";
 
-            "Given I have a new Trader".x(() => system = TestSystemDataStatic.StantonSystem);
+            "Given I have a new system".x(() => system = TestSystemDataStatic.StantonSystem);
 
-            "When I Submit the Trader".x(async () =>
+            "When I Submit the system".x(async () =>
             {
-                var systemRepository = CreateRepository<int, AstralSystem>("SubmitSystem");
+                var systemRepository = new AstralSystemRepository(CreateNewContext(dbName));
                 await systemRepository.New(TestSystemDataStatic.StantonSystem);
                 id = TestSystemDataStatic.StantonSystem.Id;
             });
 
-            "Then the Trader is displayed".x(async () =>
+            "Then the system is displayed".x(async () =>
             {
-                var systemRepository = new AstralSystemRepository(CreateNewContext("SubmitSystem"), true);
+                var systemRepository = new AstralSystemRepository(CreateNewContext(dbName));
                 AssertSystem(await systemRepository.Get(id), TestSystemDataStatic.StantonSystem);
             });
         }
@@ -61,45 +65,60 @@ namespace StarCitizenTradeRouter.TraderTools.WebApp.Tests
         [Scenario]
         public void SubmitOffer()
         {
-            Trader buyer = null;
-            Trader seller = null;
+            Trader me = null;
             TradingPost post = null;
             Commodity commondity = null;
-            TradeOffer offer = null;
+            NewTradeOffer offer = null;
             int id = 0;
             var dbName = "SubmitOffer";
 
-            "Given I have a buyer".x(async () =>
+            "Given I am a trader".x(async () =>
             {
-                var traderRepo = CreateRepository<int, Trader>(dbName);
-                await traderRepo.New(TestTradeDataStatic.MargamanTrader);
-                buyer = traderRepo
+                var traderRepository = new TraderRepository(CreateNewContext(dbName));
+                id = await traderRepository.New(TestTradeDataStatic.MargamanTrader);
+                me = await traderRepository.Get(id);
             });
 
-            "And I have a seller".x(() => seller = TestTradeDataStatic.UEETrader);
+            "And I have a trading post".x(async () =>
+            {
+                var systemRepository = new AstralSystemRepository(CreateNewContext(dbName));
+                await systemRepository.New(TestSystemDataStatic.StantonSystem);
+                var system = await systemRepository.Get(id);
+                post = system.TradePoints.OfType<TradingPost>().First();
+            });
+        
+            "And I have a new commodity".x(async () =>
+            {
+                var commodityRepo = new CommodityRepository(CreateNewContext(dbName));
+                var id = await commodityRepo.New(TestTradeDataStatic.AgriciumCommondity);
+                commondity = await commodityRepo.Get(id);
+            });
 
-            "And I have a trading post".x(() => post = TestSystemDataStatic.KudreOrePost);
-
-            "And I have a new type of goods".x(() => commondity = TestTradeDataStatic.AgriciumCommondity);
-
-            "And I have an offer".x(() => offer = new TradeOffer { Id = 0, TradePointId = post, Commodity = commondity, PricePerUnit = 23.99M, Buyer = buyer, Seller = seller });
+            "And I have an offer".x(() => offer = new NewTradeOffer
+            { 
+                Id = 0, 
+                TraderId = me.Id,
+                TradePointId = post.Id, 
+                CommodityId = commondity.Id, 
+                PricePerUnit = 23.99M, 
+                OfferType = (int)OfferType.Buy 
+            });
 
             "When I submit the offer".x(async () =>
             {
-                var offerRepository = CreateRepository<int, TradeOffer>();
-                await offerRepository.New(offer);
-                id = offer.Id;
+                var traderRepository = new TraderRepository(CreateNewContext(dbName));
+                var command = new NewTradeOfferCommand(traderRepository);
+                id = await command.Execute(offer);
             });
 
             "Then the Offer is displayed".x(async () =>
             {
-                var offerRepository = CreateRepository<int, TradeOffer>("SubmitOffer");
-                AssertOffer(await offerRepository.Get(id), offer);
+                var traderRepository = new TraderRepository(CreateNewContext(dbName), true);
+                var trader = await traderRepository.Get(me.Id);
+                AssertOffer(trader.TradeOffers.First(o => o.Id == id), offer);
             });
-            
         }
-
-
+        
         [Scenario]
         public void GetBestTradeFromLocation()
         {
@@ -108,24 +127,16 @@ namespace StarCitizenTradeRouter.TraderTools.WebApp.Tests
             List<TradeOption> results = null;
             var dbName = "GetBestTradeFromLocation";
 
-            List<TradeOption> expectedTrades = new List<TradeOption>
-            {
-
-            };
-
             "Given I have a system with historical trades".x(async () => system = await GenerateSystem(CreateNewContext(dbName)));
-            "And the system has been submitted".x(async () =>
-            {
-                var systemRepo = new AstralSystemRepository(CreateNewContext(dbName));
-                await systemRepo.New(system);
-            });
+
             "And I have a search Location".x(() => location = system.Planets.First(p => p.Name == "ArcCorp"));
             "When I ask for the best trade".x(async () =>
             {
-                var tradeAnalyser = new SimpleLogicTradeAnalyser(new TradeOfferRepository(CreateNewContext(dbName), true), new PlanetRepository(CreateNewContext(dbName), true));
+                var tradeAnalyser = new SimpleLogicTradeAnalyser(new TraderRepository(CreateNewContext(dbName), true), new AstralSystemRepository(CreateNewContext(dbName), true));
                 results = (await tradeAnalyser.GetBestNearPlanet(5, location.Id, DateTime.Parse("15/03/2020"))).ToList();
             });
-            "Then I am returned the top 5 trades".x(() => results.Should().BeEquivalentTo(expectedTrades));
+
+            "Then I am returned the top 5 trades".x(() => results.Count.Should().Be(expectedTrades));
         }
 
         private void AssertTrader(Trader actual, Trader expected)
@@ -140,22 +151,29 @@ namespace StarCitizenTradeRouter.TraderTools.WebApp.Tests
             actual.Name.Should().Be(expected.Name);
         }
 
+        private void AssertOffer(TradeOffer actual, NewTradeOffer expectedOffer)
+        {
+            actual.Should().NotBeNull();
+            actual.Id.Should().BeGreaterThan(0);
+            actual.TradePointId.Should().Be(expectedOffer.TradePointId);
+            actual.CommodityId.Should().Be(expectedOffer.CommodityId);
+            actual.PricePerUnit.Should().Be(expectedOffer.PricePerUnit);
+            actual.Trader.Id.Should().Be(expectedOffer.TraderId);
+            actual.OfferType.Should().Be(expectedOffer.OfferType);
+        }
+
         private void AssertOffer(TradeOffer actual, TradeOffer expectedOffer)
         {
             actual.Should().NotBeNull();
             actual.Id.Should().BeGreaterThan(0);
-            actual.TradePoint.Should().BeEquivalentTo(expectedOffer.TradePoint);
+            actual.TradePointId.Should().Be(expectedOffer.TradePointId);
+            actual.CommodityId.Should().Be(expectedOffer.CommodityId);
             actual.PricePerUnit.Should().Be(expectedOffer.PricePerUnit);
-            actual.Buyer.Should().BeEquivalentTo(expectedOffer.Buyer);
-            actual.Seller.Should().BeEquivalentTo(expectedOffer.Seller);
+            actual.Trader.Should().BeEquivalentTo(expectedOffer.Trader);
+            actual.OfferType.Should().Be(expectedOffer.OfferType);
         }
 
-        private static ISimpleRepository<TKey, TEntity> CreateRepository<TKey, TEntity>(string dbName) where TEntity : class
-        {
-            return new EntityFrameworkRepository<TKey, TEntity>(CreateNewContext(dbName));
-        }
-
-        private static DbContext CreateNewContext(string dbName)
+        private static TradingContext CreateNewContext(string dbName)
         {
             var options = new DbContextOptionsBuilder<TradingContext>()
                 .UseInMemoryDatabase(databaseName: dbName)
@@ -163,8 +181,7 @@ namespace StarCitizenTradeRouter.TraderTools.WebApp.Tests
                 .EnableSensitiveDataLogging()
                 .Options;
 
-            var ctx = new TradingContext(options);
-            return ctx;
+            return new TradingContext(options);
         }
 
         private async Task<AstralSystem> GenerateSystem(DbContext context)

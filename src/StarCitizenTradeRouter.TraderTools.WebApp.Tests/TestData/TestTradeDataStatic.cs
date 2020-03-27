@@ -113,12 +113,12 @@ namespace StarCitizenTradeRouter.TraderTools.WebApp.Tests
         private static TradeOffer GetTradeFromRecord(string[] record, IEnumerable<TradePoint> tradePoints, IEnumerable<Commodity> commodities)
         {
             var trade = new TradeOffer();
-            trade.TradePoint = tradePoints.First(tp => tp.Name == record[0].Trim());
-            trade.Commodity = commodities.First(gt => gt.Name == record[1].Trim());
+            trade.TradePointId = tradePoints.First(tp => tp.Name == record[0].Trim()).Id;
+            trade.CommodityId = commodities.First(gt => gt.Name == record[1].Trim()).Id;
             trade.PricePerUnit = Convert.ToDecimal(record[2].Trim());
             trade.DateTimeOfOffer = Convert.ToDateTime(record[3].Trim());
-            trade.Buyer = AllTraders.First(t => t.Name == record[4].Trim());
-            trade.Seller = AllTraders.First(t => t.Name == record[5].Trim());
+            trade.Trader = AllTraders.First(t => t.Name == record[4].Trim());
+            trade.OfferType = Enum.Parse<OfferType>(record[5]);
 
             return trade;
         }

@@ -2,7 +2,7 @@
 
 namespace StarCitizenTradeRouter.Trading.Dtos
 {
-    public class TradePoint : Entity
+    public class TradePoint : NamedEntity
     {
         public AstralBody Parent { get; set; }
 

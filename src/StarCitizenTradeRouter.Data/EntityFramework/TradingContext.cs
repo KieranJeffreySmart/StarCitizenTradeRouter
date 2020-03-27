@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using StarCitizenTradeRouter.Trading.Dtos;
 
-namespace StarCitizenTradeRouter.Data
+namespace StarCitizenTradeRouter.Data.EntityFramework
 {
-    public class TradingContext: DbContext
+    public class TradingContext : DbContext
     {
         public DbSet<Trader> Traders;
         public DbSet<AstralSystem> Systems;
@@ -33,7 +33,7 @@ namespace StarCitizenTradeRouter.Data
             modelBuilder.Entity<Port>();
             modelBuilder.Entity<City>();
             modelBuilder.Entity<Commodity>().HasKey(t => t.Id);
-            modelBuilder.Entity<TradeOffer>().HasOne(t => t.Buyer).HasKey(t => t.Id);
+            modelBuilder.Entity<TradeOffer>().HasKey(t => t.Id);
         }
     }
 }

@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\StarCitizenTradeRouter.Data\StarCitizenTradeRouter.Data.csproj" />
+    <ProjectReference Include="..\StarCitizenTradeRouter.Presentation\StarCitizenTradeRouter.Presentation.csproj" />
     <ProjectReference Include="..\StarCitizenTradeRouter\StarCitizenTradeRouter.csproj" />
   </ItemGroup>
 

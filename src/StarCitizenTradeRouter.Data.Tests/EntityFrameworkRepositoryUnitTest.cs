@@ -1,6 +1,8 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using StarCitizenTradeRouter.Data.EntityFramework;
 using StarCitizenTradeRouter.Services;
+using StarCitizenTradeRouter.Trading.Dtos;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -62,7 +64,7 @@ namespace StarCitizenTradeRouter.Data.Tests
         }
     }
 
-    public class TestEntity
+    public class TestEntity: ITradingEntity<int>
     {
         public int Id { get; set; }
         public string Name { get; set; }

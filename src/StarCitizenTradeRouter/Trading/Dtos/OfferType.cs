@@ -1,6 +1,8 @@
 ﻿namespace StarCitizenTradeRouter.Trading.Dtos
 {
-    public class Commodity : NamedEntity
+    public enum OfferType: int
     {
+        Buy,
+        Sell
     }
 }

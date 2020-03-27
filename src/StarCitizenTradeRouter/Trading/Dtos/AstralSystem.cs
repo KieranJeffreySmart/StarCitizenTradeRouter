@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace StarCitizenTradeRouter.Trading.Dtos
 {
-    public class AstralSystem : Entity
+    public class AstralSystem : NamedEntity
     {
         public virtual ICollection<Planet> Planets { get; set; }
 

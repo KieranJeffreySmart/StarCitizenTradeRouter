@@ -2,7 +2,7 @@
 
 namespace StarCitizenTradeRouter.Trading.Dtos
 {
-    public class AstralBody: Entity
+    public class AstralBody: NamedEntity
     {
         public virtual ICollection<TradePoint> TradePoints { get; set; }
     }
